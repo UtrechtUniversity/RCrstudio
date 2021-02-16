@@ -26,7 +26,19 @@ config_workspace <- function() {
   #
   icommands <- rstudioapi::showQuestion(title = 'Yoda', message = 'Install icommands?', ok = "Yes", cancel = 'No')
   if (icommands) {
-    install_script <- file.path(getwd(), 'inst/install_icommands.sh')
-    system2(command = 'sh', args = install_script, stdout = 'ii.out', stderr = 'ii.err')
+    install_icommands()
+
   }
+
+  # install irods environment on user level
+  #
+  irods_user <- rstudioapi::showQuestion(title = 'Yoda', message = 'Install/override irods environment?', ok = "Yes", cancel = 'No')
+  if (irods_user) {
+    set_irods_env(override = TRUE)
+  }
+
+  # sync Yoda
+
+  #
 }
+

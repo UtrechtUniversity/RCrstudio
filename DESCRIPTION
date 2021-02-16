@@ -1,15 +1,16 @@
 Package: RCrstudio
 Type: Package
-Title: What the Package Does (Title Case)
+Title: A Robust RStudio Environment in Research Cloud for Reproducible Research
 Version: 0.1.0
 Author: Who wrote it
 Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Description: This package provides R scripts for installation and configuration of software tools to make a
+    robust RStudio environment in Research Cloud for Reproducible Research.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports:
   credentials,
-  rstudioapi
+  rstudioapi,
+  stringr
 RoxygenNote: 7.0.2
