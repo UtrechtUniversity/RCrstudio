@@ -25,7 +25,7 @@ set_irods_env <- function(host = NULL, zone = NULL, user = NULL, override = FALS
   if (!dir.exists(irods_dir)) {
     dir.create(path = irods_dir, mode = '0700')
   }
-  irods_file <- file.path(Sys.getenv('HOME'), '.irrods', 'irods_environment.json')
+  irods_file <- file.path(Sys.getenv('HOME'), '.irods', 'irods_environment.json')
   if (!override && file.exists(irods_file)) {
     print('irods  environment already exists! Use override = TRUE')
     return(FALSE)
