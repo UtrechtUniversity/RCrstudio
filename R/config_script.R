@@ -1,10 +1,11 @@
 #' Config RStudio workspace in Research Cloud
 #'
-#'
+#' @export
 config_workspace <- function() {
 
   github <- rstudioapi::showQuestion(title = 'GITHUB access', message = 'Store GitHub PAT?', ok = "Yes", cancel = 'No')
   if(github) {
+    credential_helper_set(helper = 'store', global = TRUE)
     credentials::set_github_pat(force_new = TRUE)
   }
 

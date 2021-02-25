@@ -21,7 +21,7 @@ set_irods_env <- function(host = NULL, zone = NULL, user = NULL, override = FALS
     print('Host, user or zone is NULL; irods environment not set')
     return(FALSE)
   }
-  irods_dir <- file.path(Sys.getenv('HOME'), '.irrods')
+  irods_dir <- file.path(Sys.getenv('HOME'), '.irods')
   if (!dir.exists(irods_dir)) {
     dir.create(path = irods_dir, mode = '0700')
   }
