@@ -8,7 +8,7 @@
 #'
 #' @export
 #'
-sync_data  <- function(project = 'research-keestest', sub = NULL, check = 'hash') {
+sync_data  <- function(project = NULL, sub = NULL, check = 'hash') {
 
   # read Yoda home from json file
   irods_env_json <- file.path(Sys.getenv('HOME'), '.irods', 'irods_environment.json')
@@ -17,6 +17,14 @@ sync_data  <- function(project = 'research-keestest', sub = NULL, check = 'hash'
     return(FALSE)
   }
   yoda_home <- fromJSON(txt = irods_env_json)$irods_home
+
+  # check if icommands are initialized
+  #
+  irods_not_connected <- system2('ils', stdout = FALSE, stderr = FALSE)
+  if (irods_not_connected) {
+    warning('No irods connection')
+    return(FALSE)
+  }
 
   # construct collection path out of yoda home, project name and subproject name
   if (is.null(project)) {
@@ -29,20 +37,37 @@ sync_data  <- function(project = 'research-keestest', sub = NULL, check = 'hash'
   }
 
   # test existence of data collection in Yoda
-  print(collection_path)
-
-
-
+  irods_value <- system2(command = 'icd', args = collection_path, stdout = FALSE, stderr = FALSE)
+  if (irods_value != 0) {
+    warning(sprintf('%s: Yoda collection does not exists', collection_path))
+    return(FALSE)
+  }
 
   # construct the path of the projects data folder on Research Cloud
+  #
+  local_project<- basename(getwd())
+  if (local_project != project) {
+    warning("%s: working directory not project directory", getwd())
+    retrun(FALSE)
+  }
 
-  # check if icommands are initialized
-
-  # check existence of collection
+  local_data <- file.path(getwd(), 'data')
+  if (!is.null(sub)) {
+    local_data <- file.path(local_data, sub)
+  }
+  if (!dir.exists(local_data)) {
+    warning(sprintf("%s: local data collection doesn't exists", local_data))
+  }
 
   # make irsync command
+  source      <- sprintf("i:%s", collection_path)
+  destination <- local_data
+  irsync_args <- c('-r', '-l', source, destination)
+  print(sprintf('irsync %s %s %s %s', irsync_args[1], irsync_args[2], irsync_args[3], irsync_args[4]))
+  irsync_value <- system2('irsync', stdout = TRUE, stderr = TRUE)
+  return(irsync_value)
 
-  # test irsync command
+  #
 
   # execute irsync
 
