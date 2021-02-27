@@ -5,10 +5,12 @@
 #'
 #' @param project Name (character string) of the project
 #' @param check Type of check to perform before synchronizing. See Details
+#' @param delete What to do with files in target not in source anymore. If FALSE (default) those files remain in target unchanged.
+#' If TRUE they are removed.
 #'
 #' @export
 #'
-sync_data  <- function(project = NULL, sub = NULL, check = 'hash') {
+sync_data  <- function(project = NULL, sub = NULL, delete = FALSE, check = 'hash') {
 
   # read Yoda home from json file
   irods_env_json <- file.path(Sys.getenv('HOME'), '.irods', 'irods_environment.json')
@@ -62,9 +64,29 @@ sync_data  <- function(project = NULL, sub = NULL, check = 'hash') {
   # make irsync command
   source      <- sprintf("i:%s", collection_path)
   destination <- local_data
-  irsync_args <- c('-r', '-l', source, destination)
-  print(sprintf('irsync %s %s %s %s', irsync_args[1], irsync_args[2], irsync_args[3], irsync_args[4]))
-  irsync_value <- system2('irsync', stdout = TRUE, stderr = TRUE)
+  irsync_args <- c('-r', source, destination)
+  #print(sprintf('irsync %s %s %s %s', irsync_args[1], irsync_args[2], irsync_args[3], irsync_args[4]))
+  irsync_value <- system2(command = 'irsync', args = irsync_args, stdout = FALSE, stderr = FALSE)
+  if (irsync_value != 0) {
+    warning(sprintf("Error while executing: 'irsync %s'", irsync_args))
+    return(FALSE)
+  }
+
+  if (!delete) {
+    return(TRUE)
+  }
+
+  # look for left-overs in destination
+  #
+  irsync_args  <- c('-r', '-l', destination, source)
+  irsync_list <- system2(command = 'irsync', args = irsync_args, stdout = TRUE, stderr = TRUE)
+  if(length(irsync_list) > 1) {
+    left_overs  <- get_left_overs(irsync_list)
+  }
+
+
+
+
   return(irsync_value)
 
   #
@@ -72,5 +94,11 @@ sync_data  <- function(project = NULL, sub = NULL, check = 'hash') {
   # execute irsync
 
   # check irsync results
+
+}
+
+get_left_overs <- function(irsync_list) {
+  l <- map(.x = out, .f = function(x, pattern) str_split(string = x, pattern = pattern)[[1]], pattern = '   ')
+  m <- reduce(.x = l, .f = function(x, y) c(x, y[[1]]))
 
 }
