@@ -1,11 +1,15 @@
-Package: RCrstudio
+Package: RIRE
 Type: Package
-Title: A Robust RStudio Environment in Research Cloud for Reproducible Research
+Title: A Robust Interactive R Environment
 Version: 0.1.0
+Authors@R: c(
+    person("Kees", "van Eijden", email = "k.vaneijden@uu.nl", role = c("aut", "cre")),
+    person("Jelle", "Treep", email = "h.j.treep@uu.nl", role = "ctb"),
+    person("Ton", "Smeele", email = "a.p.m.smeele@uu.nl", role = "ctb")
+  )
 Author: Who wrote it
 Maintainer: The package maintainer <yourself@somewhere.net>
-Description: This package provides R scripts for installation and configuration of software tools to make a
-    robust RStudio environment in Research Cloud for Reproducible Research.
+Description: A package for configuring a robust interactive R environment based on RStudio running in the Research Cloud.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
