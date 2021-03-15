@@ -103,7 +103,7 @@ login_irods <- function(ttl = 1L, password = NULL) {
   )
   ret_val <- system2(command = 'iinit', args = init_args, stdout = FALSE, stderr = FALSE) # Linux returns 0 if command was succesful,
                                                                                           # otherwise non-zero
-  login_succes <- ifelse(retval == 0, yes = TRUE, no = FALSE)
+  login_succes <- ifelse(ret_val == 0, yes = TRUE, no = FALSE)
   if(!login_succes) {
     warning('Connecting to iRODS not successful')
   }

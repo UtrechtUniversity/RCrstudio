@@ -16,5 +16,9 @@ LazyData: true
 Imports:
   credentials,
   rstudioapi,
-  stringr
+  stringr,
+  purrr,
+  usethis,
+  jsonlite,
+  gh
 RoxygenNote: 7.1.1

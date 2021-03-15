@@ -1,8 +1,8 @@
 ---
-title: RIRE
+title: rire
 output:
-  html_document: default
   pdf_document: default
+  html_document: default
 ---
 ## [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 

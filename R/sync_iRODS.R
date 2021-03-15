@@ -43,9 +43,9 @@ sync_irods  <- function(project = NULL, stage = c('data', 'output'), delete = FA
   #
   irods_env_json <- file.path(Sys.getenv('HOME'), '.irods', 'irods_environment.json')
   if(!file.exists(irods_env_json)) {
-    stop(sprintf('No irods environment file %s', irods_env))
+    stop(sprintf('No irods environment file %s', irods_env_json))
   }
-  irods_home <- fromJSON(txt = irods_env_json)$irods_home
+  irods_home <- jsonlite::fromJSON(txt = irods_env_json)$irods_home
 
   # check if icommands are initialized
   #
@@ -153,10 +153,12 @@ get_filenames_irsync <- function(irsync_list) {
 
   # get first part of each line in a list and convert to vector
   #
-  l <- map_chr(.x = irsync_list, .f = function(x) str_split(string = x, pattern = '   ')[[1]][[1]])
+  l <- purrr::map_chr(.x = irsync_list, .f = function(x) stringr::str_split(string = x, pattern = '   ')[[1]][[1]])
   l
 }
 
 construct_file_path <- function(...) {
   file.path(getwd(), ...)
 }
+
+

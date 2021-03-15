@@ -3,6 +3,7 @@
 export(config_workspace)
 export(install_icommands)
 export(login_irods)
+export(rstudio_login_irods)
 export(set_irods_env)
 export(store_github_pat)
 export(sync_irods)

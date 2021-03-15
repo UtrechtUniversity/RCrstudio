@@ -16,7 +16,7 @@ config_workspace <- function() {
   github <- rstudioapi::showQuestion(title = 'GITHUB', message = 'Store GitHub PAT?', ok = "Yes", cancel = 'No')
   if (github) {
     if(!store_github_pat()) {
-      showDialog(title = 'GitHub', message = 'PAT was not set')
+      rstudioapi::showDialog(title = 'GitHub', message = 'PAT was not set')
     }
   }
 
@@ -26,7 +26,7 @@ config_workspace <- function() {
   if (icommands) {
     install_ok <- install_icommands()
     if(!install_ok) {
-      showDialog(title = 'iRODS', message = 'Installation of icommands was not successful')
+      rstudioapi::showDialog(title = 'iRODS', message = 'Installation of icommands was not successful')
     }
   }
 
@@ -40,7 +40,7 @@ config_workspace <- function() {
 
     set_ok <-set_irods_env(host = host, zone = zone, user = user, override = TRUE)
     if(!set_ok) {
-      showDialog(title = 'iRODS', message = 'Setting of iRODS environment was not successful')
+      rstudioapi::showDialog(title = 'iRODS', message = 'Setting of iRODS environment was not successful')
     }
   }
 
@@ -48,10 +48,7 @@ config_workspace <- function() {
   #
   irods_login <- rstudioapi::showQuestion(title = 'iRODS', message = 'Test iRODS connection?', ok = "Yes", cancel = 'No')
   if (irods_login) {
-    login_ok <- login_irods(password = rstudioapi::askForPassword(prompt = 'Enter your iRODS password: '))
-    if (!login_ok) {
-      showDialog(title = 'iRODS', message = 'Connecting to iRODS was not successful')
-    }
+    login_ok <- rstudio_login_irods()
   }
 }
 
